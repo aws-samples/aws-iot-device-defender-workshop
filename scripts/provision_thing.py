@@ -18,7 +18,7 @@ def generate_agent_args_file(agent_args):
 
     agent_args += ["-f", "json"]
 
-    with open("args.txt", "w") as agent_args_file:
+    with open("agent_args.txt", "w") as agent_args_file:
         agent_args_file.writelines('\n'.join(agent_args) + '\n')
 
 
