@@ -441,7 +441,7 @@ Resources:
           -
             Effect: "Allow"
             Action:
-              - "iot:Connect"
+              - "iot:*"
             Resource:
               - "*"
     DependsOn: MyCertificate
