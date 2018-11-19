@@ -1,9 +1,8 @@
-# Workshop Steps (CFN/Cloud9 Version)
+# Workshop Steps
 ## Pre-reqs (host laptop)
 
-  - Get your AWS credentials
-      - Access Key Id
-      - Secret Key
+  - AWS Account
+  - git
   - Clone workshop repo from Github
   ```
   git clone https://github.com/aws-samples/aws-iot-device-defender-workshop.git
@@ -12,8 +11,7 @@
 ## Create your Workshop Cloudformation Stack
 
 We will create an online development environment. This environment will
-lets simulate an IoT thing, an attacker and will let us quickly test out
-different features of Device Defender and run our similated attack.
+let us simulate an IoT thing, and a malicious process running on that thing. Because Cloud9 automatically sets up your AWS credentials, it will let us quickly test out different features of Device Defender and run our simulated attack.
 
 This CloudFormation Stack will create:
 
@@ -44,7 +42,7 @@ This CloudFormation Stack will create:
   - Go to C9 in the AWS Console: https://console.aws.amazon.com/cloud9/home
   - Enter the environment "Device Defender Workshop", by clicking the "Open Ide" button
 
-## Install prereqs
+### Install prereqs
 
 In this step, we will run a small shell script that will setup the environment so we can quickly get started learning about Device Defender
 
@@ -53,7 +51,7 @@ In this step, we will run a small shell script that will setup the environment s
 - Install AWS Iot Device SDK python package
 - Install AWS Iot Device Defender Agent SDK Python Package
 
-### Running the Bootstrap Script
+#### Steps
 
 From a console tab towards the bottom of your Cloud9 Ide, run "bootstrap.sh" script
 
@@ -136,7 +134,7 @@ processing is done automatically in the cloud by Device Defender.
 - Get your custom service endpoint from the IoT Console
   - IoT Console -> Settings
   - Put your endpoint in scripts/agent\_args.txt , replacing the "YOUR_ENDPOINT_HERE" text with your endpoint location
-  - Run the agent
+  Run the agent
   ```
   cd scripts
   python usr/local/lib/python2.7/site-packages/AWSIoTDeviceDefenderAgentSDK/agent.py @agent_args.txt
@@ -144,12 +142,11 @@ processing is done automatically in the cloud by Device Defender.
 ## Start the attacker
 
 - Get your Target server URL from the cloudformation outputs
-
 - In a second console tab (leave the agent running), run "ab" tool, which will generate load from your "device" to the target server
 
 ```
 #Note: the trailing space is necessary here:
-ab -n 10000 http://YOUR_INSTANCE_URL/
+ab -n 10000 http://YOUR_TARGET_INSTANCE_URL/
 ```
 
 ## View Violations
@@ -157,12 +154,12 @@ ab -n 10000 http://YOUR_INSTANCE_URL/
 - Iot -> Defend -> Detect -> Violations
 - View the "Now" tab to see current state
 - View the "History" tab to see how the device has changed over time
-  _Note_:
-### CLI
 
 ## Check violation email
 - You should see an email from SNS indicating the violation
 ## Confirm Violation has cleared
+- After approximateley 10 minutes after you stop running AB, your device should no longer be in violation. _Note_ You can always check your violations history tab to see how the security posture of your devices changed over time. 
+
 # Cleanup
  -  Delete your cloudformation stack
-
+ -  Delete all resources associated with DefenderWorkshop in your IoT Account

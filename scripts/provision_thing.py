@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import boto3
 from botocore.exceptions import ClientError
 import json
@@ -11,7 +13,9 @@ client = boto3.client('iot')
 
 
 def generate_agent_args_file(agent_args):
-    agent_args += ["-r", "../certificates/AmazonRootCA2.pem"]
+    with open("../certificates/AmazonRootCA2.pem", "r") as ca_file:
+        agent_args += ["-r", ca_file.name]
+
     agent_args += ["-f", "json"]
 
     with open("args.txt", "w") as agent_args_file:
@@ -40,11 +44,12 @@ if __name__ == '__main__':
 
         with open("../certificates/certificate.pem", "w") as certificateFile:
             certificateFile.write(certificatePem)
-            agent_args += ["-c", "../certificates/certificate.pem"]
+            agent_args += ["-c", certificateFile.name]
 
         with open("../certificates/private_key.key", "w") as private_key:
             private_key.write(keyPair["PrivateKey"])
-            agent_args += ["-k", "../certificates/private_key.key"]
+            private_key
+            agent_args += ["-k", private_key.name]
 
         response = client.attach_thing_principal(thingName=THING_NAME, principal=certificateArn)
         print("Attached Certificate to Thing: " + THING_NAME)
@@ -74,8 +79,7 @@ if __name__ == '__main__':
 
         # Create a Thing Group to put our new thing into
         response = client.create_thing_group(
-            thingGroupName=GROUP_NAME,
-            thingGroupDescription="Device Defender Workshop Group"
+            thingGroupName=GROUP_NAME
         )
         thingGroupArn = response['thingGroupArn']
 
@@ -88,8 +92,3 @@ if __name__ == '__main__':
         generate_agent_args_file(agent_args)
     except ClientError as e:
         print e;
-
-
-
-
-
