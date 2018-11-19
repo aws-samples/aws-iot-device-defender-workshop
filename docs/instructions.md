@@ -25,7 +25,7 @@ This CloudFormation Stack will create:
   - Choose "Upload a template to S3", select the
     **workshop.yaml** from the cloudformation directory of the workshop github repository you cloned earlier
   - Click "Next"
-  - Give your stack a name: "Device Defender Workshop"
+  - Give your stack a name: "DeviceDefenderWorkshop"
   - You can leave the hibernate and instance type fields as they are
   - In Subnet, choose the subnet you'd like to use
       - if you are unsure, choose the first one in the list
@@ -39,7 +39,7 @@ This CloudFormation Stack will create:
 
 ## Login into your C9 Environment
 
-  - Go to C9 in the AWS Console: https://console.aws.amazon.com/cloud9/home
+  - Go to [Cloud9 Console]: https://console.aws.amazon.com/cloud9/home
   - Enter the environment "Device Defender Workshop", by clicking the "Open Ide" button
 
 ### Install prereqs
@@ -60,7 +60,7 @@ From a console tab towards the bottom of your Cloud9 Ide, run "bootstrap.sh" scr
    ```
 ## Create your AWS IoT Thing
 
-  In this step, we will run a python script that will automate creating an AWS Iot Thing, this will be the thing that we are simulate in our Cloud9 instance:
+  In this step, we will run a python script that will automate creating an AWS Iot Thing, this will be the thing that we simulate in our Cloud9 instance:
   - An IoT Thing Group
   - An IoT Thing, registered in IoT Device management, placed in the group we created
   - An IoT Certificate, attached to your Thing
@@ -131,18 +131,15 @@ some basic system metrics, compiles them into a metrics report and
 publishes them to a reserved Device Defender MQTT Topic. From there, all
 processing is done automatically in the cloud by Device Defender.
 
-- Get your custom service endpoint from the IoT Console
-  - IoT Console -> Settings
-  - Put your endpoint in scripts/agent\_args.txt , replacing the "YOUR_ENDPOINT_HERE" text with your endpoint location
-  Run the agent
+Run the agent from a console tab:
   ```
   cd scripts
   python usr/local/lib/python2.7/site-packages/AWSIoTDeviceDefenderAgentSDK/agent.py @agent_args.txt
   ```
 ## Start the attacker
 
-- Get your Target server URL from the cloudformation outputs
-- In a second console tab (leave the agent running), run "ab" tool, which will generate load from your "device" to the target server
+- Get your Target server URL from the cloudformation outputs from the stack you created earlier
+- In a second console tab (leave the agent running), run "ab" tool, which will generate http traffic from your "device" to the target server
 
 ```
 #Note: the trailing space is necessary here:
