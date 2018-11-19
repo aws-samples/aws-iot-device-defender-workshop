@@ -1,13 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'AWS CloudFormation Sample Template CloudWatch_Logs: Provisions a minimal
-  web application, and demonstrates how to stream the provisioning logs (cloud-init.log,
-  cfn-init.log, cfn-hup.log, and cfn-wire.log) to CloudWatch Logs. This eliminates
-  the need to SSH into an EC2 instance for debugging provisioning issues. Simply view
-  the logs in the AWS CloudWatch console. **WARNING** You will be billed for the AWS
-  resources if you create a stack from this template.'
+  web application, that streams the provisioning logs (cloud-init.log,
+  cfn-init.log, cfn-hup.log, and cfn-wire.log) to CloudWatch Logs.'
 Parameters:
-  CSRParameter:
-    Type: "String"
   AutoHibernateTimeout:
     Default: 30
     Description: How many minutes idle before shutting down the IDE
@@ -409,8 +404,8 @@ Resources:
     Type: AWS::Cloud9::EnvironmentEC2
     Properties:
       Repositories:
-      - RepositoryUrl: https://github.com/aws-samples/aws-iot-device-defender-agent-sdk-python
-        PathComponent: github.com/aws-samples/aws-iot-device-defender-agent-sdk-python
+      - RepositoryUrl: https://github.com/aws-samples/aws-iot-device-defender-workshop
+        PathComponent: workshop
       Description: Cloud9 IDE
       AutomaticStopTimeMinutes:
         Ref: AutoHibernateTimeout
@@ -420,49 +415,9 @@ Resources:
         Ref: InstanceType
       Name:
         Ref: AWS::StackName
-  MyThing:
-    Type: AWS::IoT::Thing
-    Properties:
-      ThingName: DefenderWorkshopThing
-    DependsOn: MyCertificate
-  MyCertificate:
-    Type: AWS::IoT::Certificate
-    Properties:
-      CertificateSigningRequest:
-        Ref: "CSRParameter"
-      Status: "ACTIVE"
-  MyPolicy:
-    Type: AWS::IoT::Policy
-    Properties:
-      PolicyName: DefenderWorkshopPolicy
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          -
-            Effect: "Allow"
-            Action:
-              - "iot:*"
-            Resource:
-              - "*"
-    DependsOn: MyCertificate
-  MyPolicyPrincipalAttachment:
-    Type: AWS::IoT::PolicyPrincipalAttachment
-    Properties:
-      PolicyName: DefenderWorkshopPolicy
-      Principal: !GetAtt MyCertificate.Arn
-    DependsOn: [MyPolicy, MyCertificate]
-  MyThingPrincipalAttachment:
-    Type: AWS::IoT::ThingPrincipalAttachment
-    Properties:
-      ThingName: DefenderWorkshopThing
-      Principal: !GetAtt MyCertificate.Arn
-    DependsOn: [MyThing, MyCertificate]
 Outputs:
   URL:
-    Description: URL of the sample website
+    Description: URL of the target website
     Value: !Sub 'http://${WebServerInstance.PublicDnsName}'
-  MyCertificate:
-    Description: "CertificateArn"
-    Value: !GetAtt MyCertificate.Arn
   Cloud9EnvironmentName:
     Value: !GetAtt IDE.Name
