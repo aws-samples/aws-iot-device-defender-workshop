@@ -18,7 +18,7 @@ import json
 import os
 import argparse
 
-IOT_POLICY_FILE = "scripts/iot_policy.json"
+IOT_POLICY_FILE = "iot_policy.json"
 
 AMAZON_ROOT_CA__FILE = "../certificates/AmazonRootCA1.pem"
 PRIVATE_KEY_FILE = "../certificates/private_key.key"
