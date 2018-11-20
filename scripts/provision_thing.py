@@ -51,7 +51,7 @@ def cleanup_things():
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--cleanup", required=False, action="store_true", dest=cleanup,
+    parser.add_argument("-c", "--cleanup", required=False, action="store_true", dest="cleanup",
                         help="Cleanup resources created by previous invocations of this script")
 
     args = parser.parse_args()
