@@ -1,21 +1,22 @@
 # Workshop Steps
-## Prerequisites (host laptop)
+## Prerequisites
 
   - AWS Account
-  - git
+    - Have a [Default VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) configured 
+  - [git](https://git-scm.com/downloads) installed on your development machine _(for cloning the workshop repository)_
   - Clone workshop repo from Github
-  ```bash
-  git clone https://github.com/aws-samples/aws-iot-device-defender-workshop.git
-  ```
+    ```bash
+    git clone https://github.com/aws-samples/aws-iot-device-defender-workshop.git
+    ```
 
 ## Create your Workshop Cloudformation Stack
 
-We will create an online development environment. This environment will
+We will create an online development environment using [AWS Cloud9](https://console.aws.amazon.com/cloud9/home). This environment will
 let us simulate an IoT thing, and a malicious process running on that thing. Because Cloud9 automatically sets up your AWS credentials, it will let us quickly test out different features of Device Defender and run our simulated attack.
 
 This CloudFormation Stack will create:
 
-  - A Cloud9 IDE and associated EC2 instance
+  - A Cloud9 IDE and associated EC2 instance (this will stand in for an IoT Thing)
   - An EC2 instance to serve as a target for our simulated attack
 
 ### Steps
@@ -54,9 +55,9 @@ In this step, we will run a small shell script that will setup the environment s
 #### Steps
 
 From a console tab towards the bottom of your Cloud9 IDE, run "bootstrap.sh" script
-
    ```bash
-   ./scripts/bootstrap.sh
+   cd scripts
+   ./bootstrap.sh
    ```
 ## Create your AWS IoT Thing
 
@@ -68,9 +69,9 @@ From a console tab towards the bottom of your Cloud9 IDE, run "bootstrap.sh" scr
   - An agent_args.txt file to make running the Device Defender Agent easier
 
 ### Running the Thing Provisioning script
-
+While in the _scripts_ directory, run the following
   ```bash
-  ./scripts/provision_thing.py
+  ./provision_thing.py
   ```
 
 ## Setup an SNS Topic for Device Defender Violation Notifications (SNS Console)
@@ -84,7 +85,7 @@ For this workshop, we will configure an SNS topic and enable email delivery of t
 1. Navigate to the [SNS Console](https://console.aws.amazon.com/sns/v2/home)
 1. Click "Create Topic"
 1. For Topic Name: "DeviceDefenderNotifications"
-1. For Display Name: "Defender"
+1. For Display Name: "DvcDefendr"
 1. In the Topic Details screen for your newly created topic, click "Create Subscription"
 1. For Protocol, select "Email"
 1. For Endpoint enter your email address

@@ -18,6 +18,8 @@ import json
 import os
 import argparse
 
+IOT_POLICY_FILE = "scripts/iot_policy.json"
+
 AMAZON_ROOT_CA__FILE = "../certificates/AmazonRootCA1.pem"
 PRIVATE_KEY_FILE = "../certificates/private_key.key"
 CERTIFICATE_PEM_FILE = "../certificates/certificate.pem"
@@ -44,18 +46,25 @@ def cleanup_things():
     with open(CERTIFICATE_ID_FILE, "r") as id_file:
         cert_id = id_file.read()
         descr_response = client.describe_certificate(certificateId=cert_id)
-        print(descr_response)
         cert_arn = descr_response['certificateDescription']['certificateArn']
 
     if cert_arn and cert_id:
+        print("Detaching Policy")
         client.detach_policy(policyName=POLICY_NAME, target=cert_arn)
+        print("Deactivating Certificate")
         client.update_certificate(certificateId=cert_id,
                                   newStatus="INACTIVE")
+        print("Detaching Cert from Thing")
         client.detach_thing_principal(thingName=THING_NAME, principal=cert_arn)
+        print("Deleting Certificate")
         client.delete_certificate(certificateId=cert_id)
+        print("Removing Thing from Thing Group")
         client.remove_thing_from_thing_group(thingGroupName=GROUP_NAME, thingName=THING_NAME)
+        print("Deleting Thing")
         client.delete_thing(thingName=THING_NAME)
+        print("Deleting Thing Group")
         client.delete_thing_group(thingGroupName=GROUP_NAME)
+        print("Deleting Policy")
         client.delete_policy(policyName=POLICY_NAME)
     else:
         print("Unable to find certificate id")
@@ -116,7 +125,7 @@ if __name__ == '__main__':
             response = client.attach_thing_principal(thingName=THING_NAME, principal=certificateArn)
             print("Attached Certificate to Thing: " + THING_NAME)
 
-            with open("iot_policy.json", "r") as policyFile:
+            with open(IOT_POLICY_FILE, "r") as policyFile:
                 policy = json.load(policyFile)
 
             policies = client.list_policies()['policies']
