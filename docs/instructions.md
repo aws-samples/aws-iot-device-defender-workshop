@@ -20,59 +20,59 @@ This CloudFormation Stack will create:
 
 ### Steps
 
-  - From the AWS Console, navigate to [CloudFormation]: https://console.aws.amazon.com/cloudformation/home
-  - Click the "Create Stack" button,
-  - Choose "Upload a template to S3", select the
-    **workshop.yaml** from the cloudformation directory of the workshop github repository you cloned earlier
-  - Click "Next"
-  - Give your stack a name: "DeviceDefenderWorkshop"
-  - You can leave the hibernate and instance type fields as they are
-  - In Subnet, choose the subnet you'd like to use
+  1. From the AWS Console, navigate to [CloudFormation](https://console.aws.amazon.com/cloudformation/home)
+  1. Click the "Create Stack" button,
+  1. Choose "Upload a template to S3", select the
+    **workshop.yaml** from the _cloudformation_ directory of the workshop GitHub repository you cloned earlier
+  1. Click "Next"
+  1. Give your stack a name: "DeviceDefenderWorkshop"
+  1. You can leave the hibernate and instance type fields as they are
+  1. In Subnet, choose the subnet you'd like to use
       - if you are unsure, choose the first one in the list
-  - In KeyName, Select the Keypair you'd like to use for ssh access to your instances
-  - Click "Next" on the following screen
-  - Check the "I acknowledge that AWS CloudFormation might create IAM resources." box to continue
-  - Click the "Create Stack" button at the bottom of the screen
-  - Wait for stack to finish, you should see "CREATE COMPLETE" in the status column after a few minutes
+  1. In KeyName, Select the Keypair you'd like to use for ssh access to your instances
+  1. Click "Next" on the following screen
+  1. Check the "I acknowledge that AWS CloudFormation might create IAM resources." box to continue
+  1. Click the "Create Stack" button at the bottom of the screen
+  1. Wait for stack to finish, you should see "CREATE COMPLETE" in the status column after a few minutes
       - Tip: *you may need to refresh your screen to see the updated
         status of your stack*
 
 ## Login into your C9 Environment
 
-  - Go to [Cloud9 Console]: https://console.aws.amazon.com/cloud9/home
-  - Enter the environment "Device Defender Workshop", by clicking the "Open Ide" button
+  1. Go to the [Cloud9 Console](https://console.aws.amazon.com/cloud9/home)
+  1. Enter the environment "Device Defender Workshop", by clicking the "Open IDE" button
 
-### Install prereqs
+### Install prerequisites
 
 In this step, we will run a small shell script that will setup the environment so we can quickly get started learning about Device Defender
 
 - Download Amazon CA certificates
 - Install Boto3 python library for AWS
-- Install AWS Iot Device SDK python package
-- Install AWS Iot Device Defender Agent SDK Python Package
+- Install AWS IoT Device SDK python package
+- Install AWS IoT Device Defender Agent SDK Python Package
 
 #### Steps
 
-From a console tab towards the bottom of your Cloud9 Ide, run "bootstrap.sh" script
+From a console tab towards the bottom of your Cloud9 IDE, run "bootstrap.sh" script
 
    ```
    ./scripts/bootstrap.sh
    ```
 ## Create your AWS IoT Thing
 
-  In this step, we will run a python script that will automate creating an AWS Iot Thing, this will be the thing that we simulate in our Cloud9 instance:
+  In this step, we will run a Python script that will automate creating an AWS IoT Thing, this will be the thing that we simulate in our Cloud9 instance:
   - An IoT Thing Group
   - An IoT Thing, registered in IoT Device management, placed in the group we created
   - An IoT Certificate, attached to your Thing
   - An IoT Policy attached to the Certificate
   - An agent_args.txt file to make running the Device Defender Agent easier
 
-### Running the Create_Thing script
+### Running the Thing Provisioning script
 
-```
-python scripts/provision_thing.py
+  ```
+  python scripts/provision_thing.py
 
-```
+  ```
 
 ## Setup an SNS Topic for Device Defender Violation Notifications
 
@@ -81,72 +81,66 @@ Device Defender has the ability to send notification of a Behavior Profile viola
 
 ### Setting up the SNS Topic
 
-- Navigate to the [SNS Console]: https://console.aws.amazon.com/sns/v2/home
-- Click "Create Topic"
-- For Topic Name: "DeviceDefenderNotifications"
-- For Display Name: "Device Defender Notifications"
-- In the Topic Details screen for your newly created topic, click "Create Subscription"
-- For Protocol, select "Email"
-- For Endpoint enter your email address
-- Click "Confirm Subscription" link in the email
+1. Navigate to the [SNS Console](https://console.aws.amazon.com/sns/v2/home)
+1. Click "Create Topic"
+1. For Topic Name: "DeviceDefenderNotifications"
+1. For Display Name: "Device Defender Notifications"
+1. In the Topic Details screen for your newly created topic, click "Create Subscription"
+1. For Protocol, select "Email"
+1. For Endpoint enter your email address
+1. Click "Confirm Subscription" link in the email
   - _Note_: the sender of the email will be the same as the Display Name you entered for the topic.
 
 ### Create a Target Role for Device Defender SNS Notifications
 
 For this step, we will re-use a policy from AWS IoT Rules Engine, as it has the proper SNS policy in place.
 
-- Navigate to the [IAM Console]:https://console.aws.amazon.com/iam/home
-- Select Roles from the left hand menu
-- Click "Create Role"
-- In the Select type of trusted entity section, choose "AWS Service"
-- Select "IoT" as the service that will use this role
-- When you select "IoT", a section will appear entitled "Select your use case"
-- Select "IoT"
-- Click "Next:Permissions"
-- Next you will shown a summary of attached policies, you don't need to do anything on this screen
-- Click "Next: Tags"
-- Click "Next: Review"
-- On the Create Role screen enter "DeviceDefenderWorkshopNotification" for the Role Name
-- Click "Create Role"
+1. Navigate to the [IAM Console](https://console.aws.amazon.com/iam/home)
+1. Select Roles from the left hand menu
+1. Click "Create Role"
+1. In the Select type of trusted entity section, choose "AWS Service"
+1. Select "IoT" as the service that will use this role
+1. When you select "IoT", a section will appear entitled "Select your use case"
+1. Select "IoT"
+1. Click "Next:Permissions"
+1. Next you will shown a summary of attached policies, you don't need to do anything on this screen
+1. Click "Next: Tags"
+1. Click "Next: Review"
+1. On the Create Role screen enter "DeviceDefenderWorkshopNotification" for the Role Name
+1. Click "Create Role"
 
-
-
-
-## Configure a behavior profile (AWS IoT Console Version)
+## Configure a behavior profile
 
 Now that we have our simulated thing created and we have a development
 environment, we are ready to configure a behavior profile in device
 defender
 
-- Navigate to the Security Profiles Section of the Device Defender Console
-AWS Iot -> Defend -> Detect -> Security Profiles
-https://console.aws.amazon.com/iot/home#/dd/securityProfilesHub
-
-- Click the "Create" button
-- Configure parameters
-- Name: "NormalNetworkTraffic"
-- Under Behaviors
-  - **Name:** "Packets Out"
-  - **Metric:** "Packets Out"
-  - **Operator:** "Less Than"
-  - **Value:** "100"
-  - **Duration:** "5 minutes"
-- Attach profile to group "DefenderWorkshopGroup"
-      - Setup alerting SNS
-      - Select SNS Topic "DefenderWorkshopNotifications"
-      - Select Role "DeviceDefenderWorkshopNotification" 
-  - Lambda for moving thing to "quaratine" thing group??
+1. Navigate to the [Security Profiles Section](https://console.aws.amazon.com/iot/home#/dd/securityProfilesHub) of the Device Defender Console
+AWS IoT -> Defend -> Detect -> Security Profiles
+1. Click the "Create" button
+1. Configure parameters
+1. Name: "NormalNetworkTraffic"
+1. Under Behaviors
+  <br/>**Name:** "Packets Out"
+  <br/>**Metric:** "Packets Out"
+  <br/>**Operator:** "Less Than"
+  <br/>**Value:** "100"
+  <br/>**Duration:** "5 minutes"
+1. Attach profile to group "DefenderWorkshopGroup"
+  - Setup alerting SNS
+  - Select SNS Topic "DefenderWorkshopNotifications"
+  - Select Role "DeviceDefenderWorkshopNotification" 
 
 ## Start the Agent
 
 The next component of Device Defender we are going to look at is the
 Device Agent. The detect function of DD, can utilize both cloud-side
 metrics and device-side metrics. For device-side metrics, we need
-something that runs on teh device and collects metrics and sends them to
-DD. For this we provides reference implementations of agents that you
+something that runs on the device and collects metrics and sends them to
+Device Defender. For this we provide reference implementations of agents that you
 can use as the basis for your own device-defender integration.
 
-The reference agent we will be using today is the python agent. It's
+The reference agent we will be using today is the Python agent. It's
 operation is fairly simple: periodically it wakes up, takes a sample of
 some basic system metrics, compiles them into a metrics report and
 publishes them to a reserved Device Defender MQTT Topic. From there, all
@@ -159,8 +153,8 @@ Run the agent from a console tab:
   ```
 ## Start the attacker
 
-- Get your Target server URL from the cloudformation outputs from the stack you created earlier
-- In a second console tab (leave the agent running), run "ab" tool, which will generate http traffic from your "device" to the target server
+1. Get your Target server URL from the CloudFormation outputs from the stack you created earlier
+1. In a second console tab (leave the agent running), run "ab" tool, which will generate HTTP traffic from your "device" to the target server
 
 ```
 #Note: the trailing space is necessary here:
@@ -168,16 +162,36 @@ ab -n 10000 http://YOUR_TARGET_INSTANCE_URL/
 ```
 
 ## View Violations
+
 ### AWS IoT Console
-- Iot -> Defend -> Detect -> Violations
-- View the "Now" tab to see current state
-- View the "History" tab to see how the device has changed over time
+
+1. IoT -> Defend -> Detect -> Violations
+1. View the "Now" tab to see current state
+1. View the "History" tab to see how the device has changed over time
 
 ## Check violation email
-- You should see an email from SNS indicating the violation
+
+You should see an email from SNS indicating the violation the contents will look something like this:
+
+```
+{"violationEventTime":1542682416515,"thingName":"DefenderWorkshopThing","behavior":{"criteria":{"value":{"count":100},"durationSeconds":300,"comparisonOperator":"less-than"},"name":"PacketsOut","metric":"aws:all-packets-out"},"violationEventType":"alarm-cleared","metricValue":{"count":29},"violationId":"76ef8d1dc35ed4eb802ff44568f91097","securityProfileName":"NormalHTTPTraffic"}
+
+--
+If you wish to stop receiving notifications from this topic, please click or visit the link below to unsubscribe:
+https://sns.us-east-1.amazonaws.com/unsubscribe.html?SubscriptionArn=arn:aws:sns:us-east-1:890450227363:DefenderNotifications:792ddc79-88e4-49c4-ac4a-2126efea0269&Endpoint=damiller@amazon.com
+
+Please do not reply directly to this email. If you have any questions or comments regarding this email, please contact us at https://aws.amazon.com/support
+```
+
 ## Confirm Violation has cleared
-- After approximateley 10 minutes after you stop running AB, your device should no longer be in violation. _Note_ You can always check your violations history tab to see how the security posture of your devices changed over time. 
+
+After approximately 10 minutes after you stop running AB, your device should no longer be in violation.
+_Note_ You can always check your violations history tab to see how the security posture of your devices changed over time. 
 
 # Cleanup
- -  Delete your cloudformation stack
- -  Delete all resources associated with DefenderWorkshop in your IoT Account
+ 1. Delete your cloudformation stack
+ 1. Delete all resources associated with DefenderWorkshop in your IoT Account
+    - IoT Thing, Thing Group, Policy, Certificate
+    - SNS Topic
+    - SNS Subscription
+    - IAM Role
