@@ -36,7 +36,7 @@ def generate_agent_args_file(agent_args):
 
 
 def cleanup():
-    with open("../certificate_id.txt", "r") as id_file:
+    with open("../certificates/certificate_id.txt", "r") as id_file:
         cert_id = id_file.read()
 
     client.detach_policy(policyName=POLICY_NAME, target=cert_id)
@@ -49,76 +49,86 @@ def cleanup():
 
 
 if __name__ == '__main__':
-    try:
-        agent_args = []
-        if not client.list_things(attributeName=THING_NAME, attributeValue=THING_NAME)['things']:
-            response = client.create_thing(thingName=THING_NAME)
-            thingArn = response['thingArn']
-            thingId = response['thingId']
-            print("Created Thing: " + thingId)
-        else:
-            print "Thing Already Exists, please choose another name, or delete existing thing"
-            exit(1)
 
-        agent_args += ["-id", THING_NAME]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--cleanup", required=False, action="store_true", dest=cleanup,
+                        help="Cleanup resources created by previous invocations of this script")
 
-        response = client.create_keys_and_certificate(setAsActive=True)
-        certificatePem = response['certificatePem']
-        certificateArn = response['certificateArn']
-        keyPair = response['keyPair']
-        print("Created Certificate  arn:" + certificateArn + "\n id:" + response['certificateId'])
+    args = parser.parse_args()
 
-        with open("../certificates/certificate.pem", "w") as certificateFile:
-            certificateFile.write(certificatePem)
-            agent_args += ["-c", os.path.realpath(certificateFile.name)]
+    if args.cleanup:
+        cleanup()
+    else:
+        try:
+            agent_args = []
+            if not client.list_things(attributeName=THING_NAME, attributeValue=THING_NAME)['things']:
+                response = client.create_thing(thingName=THING_NAME)
+                thingArn = response['thingArn']
+                thingId = response['thingId']
+                print("Created Thing: " + thingId)
+            else:
+                print "Thing Already Exists, please choose another name, or delete existing thing"
+                exit(1)
 
-        # Save the certificate id to a file so we can easily cleanup later
-        with open("../certificates/certificate_id.txt", "w") as certificateIdFile:
-            certificateIdFile.write(response['certificateId'])
+            agent_args += ["-id", THING_NAME]
 
-        with open("../certificates/private_key.key", "w") as private_key:
-            private_key.write(keyPair["PrivateKey"])
-            private_key
-            agent_args += ["-k", os.path.realpath(private_key.name)]
+            response = client.create_keys_and_certificate(setAsActive=True)
+            certificatePem = response['certificatePem']
+            certificateArn = response['certificateArn']
+            keyPair = response['keyPair']
+            print("Created Certificate  arn:" + certificateArn + "\n id:" + response['certificateId'])
 
-        response = client.attach_thing_principal(thingName=THING_NAME, principal=certificateArn)
-        print("Attached Certificate to Thing: " + THING_NAME)
+            with open("../certificates/certificate.pem", "w") as certificateFile:
+                certificateFile.write(certificatePem)
+                agent_args += ["-c", os.path.realpath(certificateFile.name)]
 
-        with open("iot_policy.json", "r") as policyFile:
-            policy = json.load(policyFile)
+            # Save the certificate id to a file so we can easily cleanup later
+            with open("../certificates/certificate_id.txt", "w") as certificateIdFile:
+                certificateIdFile.write(response['certificateId'])
 
-        policies = client.list_policies()['policies']
+            with open("../certificates/private_key.key", "w") as private_key:
+                private_key.write(keyPair["PrivateKey"])
+                private_key
+                agent_args += ["-k", os.path.realpath(private_key.name)]
 
-        policyArn = ""
-        for p in policies:
-            if p['policyName'] == POLICY_NAME:
-                policyArn = p['policyArn']
-                policyName = POLICY_NAME
-                print("Using Existing Policy")
+            response = client.attach_thing_principal(thingName=THING_NAME, principal=certificateArn)
+            print("Attached Certificate to Thing: " + THING_NAME)
 
-        if not policyArn:
-            response = client.create_policy(policyName=POLICY_NAME, policyDocument=json.dumps(policy))
-            policyArn = response['policyArn']
-            print("Created Policy: " + POLICY_NAME)
+            with open("iot_policy.json", "r") as policyFile:
+                policy = json.load(policyFile)
 
-        response = client.attach_policy(policyName=POLICY_NAME, target=certificateArn)
-        print("Attached Policy to Certificate")
+            policies = client.list_policies()['policies']
 
-        response = client.describe_endpoint(endpointType='iot:Data-ATS')
-        agent_args += ["-e", response['endpointAddress']]
+            policyArn = ""
+            for p in policies:
+                if p['policyName'] == POLICY_NAME:
+                    policyArn = p['policyArn']
+                    policyName = POLICY_NAME
+                    print("Using Existing Policy")
 
-        # Create a Thing Group to put our new thing into
-        response = client.create_thing_group(
-            thingGroupName=GROUP_NAME
-        )
-        thingGroupArn = response['thingGroupArn']
+            if not policyArn:
+                response = client.create_policy(policyName=POLICY_NAME, policyDocument=json.dumps(policy))
+                policyArn = response['policyArn']
+                print("Created Policy: " + POLICY_NAME)
 
-        # Add our workshop thing to the new group
-        response = client.add_thing_to_thing_group(
-            thingGroupArn=thingGroupArn,
-            thingArn=thingArn
-        )
+            response = client.attach_policy(policyName=POLICY_NAME, target=certificateArn)
+            print("Attached Policy to Certificate")
 
-        generate_agent_args_file(agent_args)
-    except ClientError as e:
-        print e;
+            response = client.describe_endpoint(endpointType='iot:Data-ATS')
+            agent_args += ["-e", response['endpointAddress']]
+
+            # Create a Thing Group to put our new thing into
+            response = client.create_thing_group(
+                thingGroupName=GROUP_NAME
+            )
+            thingGroupArn = response['thingGroupArn']
+
+            # Add our workshop thing to the new group
+            response = client.add_thing_to_thing_group(
+                thingGroupArn=thingGroupArn,
+                thingArn=thingArn
+            )
+
+            generate_agent_args_file(agent_args)
+        except ClientError as e:
+            print e;

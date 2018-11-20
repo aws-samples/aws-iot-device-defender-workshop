@@ -209,3 +209,4 @@ _Note_ You can always check your violations history tab to see how the security 
     - SNS Topic
     - SNS Subscription
     - IAM Role
+    - Device Defender Behavior Profile
