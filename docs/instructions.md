@@ -46,7 +46,7 @@ This CloudFormation Stack will create:
 
 In this step, we will run a small shell script that will setup the environment so we can quickly get started learning about Device Defender
 
-- Amazon Certificate Authorities
+- Download Amazon CA certificates
 - Install Boto3 python library for AWS
 - Install AWS Iot Device SDK python package
 - Install AWS Iot Device Defender Agent SDK Python Package
@@ -78,6 +78,7 @@ python scripts/provision_thing.py
 
 Device Defender has the ability to send notification of a Behavior Profile violation via an SNS Topic. For this workshop, we will configure an SNS topic and enable email delivery of the notifications.
 
+
 ### Setting up the SNS Topic
 
 - Navigate to the [SNS Console]: https://console.aws.amazon.com/sns/v2/home
@@ -88,7 +89,28 @@ Device Defender has the ability to send notification of a Behavior Profile viola
 - For Protocol, select "Email"
 - For Endpoint enter your email address
 - Click "Confirm Subscription" link in the email
-  - Note: the sender of the email will be the same as the Display Name you entered for the topic.
+  - _Note_: the sender of the email will be the same as the Display Name you entered for the topic.
+
+### Create a Target Role for Device Defender SNS Notifications
+
+For this step, we will re-use a policy from AWS IoT Rules Engine, as it has the proper SNS policy in place.
+
+- Navigate to the [IAM Console]:https://console.aws.amazon.com/iam/home
+- Select Roles from the left hand menu
+- Click "Create Role"
+- In the Select type of trusted entity section, choose "AWS Service"
+- Select "IoT" as the service that will use this role
+- When you select "IoT", a section will appear entitled "Select your use case"
+- Select "IoT"
+- Click "Next:Permissions"
+- Next you will shown a summary of attached policies, you don't need to do anything on this screen
+- Click "Next: Tags"
+- Click "Next: Review"
+- On the Create Role screen enter "DeviceDefenderWorkshopNotification" for the Role Name
+- Click "Create Role"
+
+
+
 
 ## Configure a behavior profile (AWS IoT Console Version)
 
@@ -109,11 +131,10 @@ https://console.aws.amazon.com/iot/home#/dd/securityProfilesHub
   - **Operator:** "Less Than"
   - **Value:** "100"
   - **Duration:** "5 minutes"
-- Attach profile to group
-- *script creates a specific group name*
+- Attach profile to group "DefenderWorkshopGroup"
       - Setup alerting SNS
       - Select SNS Topic "DefenderWorkshopNotifications"
-      - Select Role "DefenderWorkshopNotificationRole" 
+      - Select Role "DeviceDefenderWorkshopNotification" 
   - Lambda for moving thing to "quaratine" thing group??
 
 ## Start the Agent

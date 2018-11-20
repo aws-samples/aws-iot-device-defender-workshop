@@ -13,7 +13,7 @@ client = boto3.client('iot')
 
 
 def generate_agent_args_file(agent_args):
-    with open("../certificates/AmazonRootCA2.pem", "r") as ca_file:
+    with open("../certificates/AmazonRootCA1.pem", "r") as ca_file:
         agent_args += ["-r", ca_file.name]
 
     agent_args += ["-f", "json"]
