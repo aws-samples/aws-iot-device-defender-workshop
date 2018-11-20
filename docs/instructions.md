@@ -1,5 +1,5 @@
 # Workshop Steps
-## Pre-reqs (host laptop)
+## Prerequisites (host laptop)
 
   - AWS Account
   - git
