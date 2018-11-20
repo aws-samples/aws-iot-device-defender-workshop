@@ -1,1 +1,2 @@
-/certificates/AmazonRootCA4.pem
+/certificates/*
+/scripts/agent_args.txt

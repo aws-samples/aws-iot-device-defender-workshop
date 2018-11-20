@@ -4,6 +4,7 @@ import boto3
 from botocore.exceptions import ClientError
 import json
 import os
+import argparse
 
 THING_NAME = "DefenderWorkshopThing"
 POLICY_NAME = "DefenderWorkshopPolicy"
@@ -14,12 +15,25 @@ client = boto3.client('iot')
 
 def generate_agent_args_file(agent_args):
     with open("../certificates/AmazonRootCA1.pem", "r") as ca_file:
-        agent_args += ["-r", ca_file.name]
+        agent_args += ["-r", os.path.realpath(ca_file.name)]
 
     agent_args += ["-f", "json"]
 
     with open("agent_args.txt", "w") as agent_args_file:
         agent_args_file.writelines('\n'.join(agent_args) + '\n')
+
+
+def cleanup():
+    with open("../certificate_id.txt", "r") as id_file:
+        cert_id = id_file.read()
+
+    client.detach_policy(policyName=POLICY_NAME, target=cert_id)
+    client.update_certificate(certificateId=cert_id,
+                              newStatus="INACTIVE")
+    client.delete_certificate(certificateId=cert_id)
+    client.delete_thing(THING_NAME)
+    client.delete_thing_group(GROUP_NAME)
+    client.delete_policy(POLICY_NAME)
 
 
 if __name__ == '__main__':
@@ -40,11 +54,15 @@ if __name__ == '__main__':
         certificatePem = response['certificatePem']
         certificateArn = response['certificateArn']
         keyPair = response['keyPair']
-        print("Created Certificate: " + certificateArn)
+        print("Created Certificate  arn:" + certificateArn + "\n id:" + response['certificateId'])
 
         with open("../certificates/certificate.pem", "w") as certificateFile:
             certificateFile.write(certificatePem)
-            agent_args += ["-c", certificateFile.name]
+            agent_args += ["-c", os.path.realpath(certificateFile.name)]
+
+        # Save the certificate id to a file so we can easily cleanup later
+        with open("../certificates/certificate_id.txt", "w") as certificateIdFile:
+            certificateIdFile.write(response['certificateId'])
 
         with open("../certificates/private_key.key", "w") as private_key:
             private_key.write(keyPair["PrivateKey"])
