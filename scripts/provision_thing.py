@@ -35,7 +35,7 @@ def generate_agent_args_file(agent_args):
         agent_args_file.writelines('\n'.join(agent_args) + '\n')
 
 
-def cleanup():
+def cleanup_things():
     with open("../certificates/certificate_id.txt", "r") as id_file:
         cert_id = id_file.read()
 
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.cleanup:
-        cleanup()
+        cleanup_things()
     else:
         try:
             agent_args = []
