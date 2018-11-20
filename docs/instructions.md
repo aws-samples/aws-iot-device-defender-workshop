@@ -4,7 +4,7 @@
   - AWS Account
   - git
   - Clone workshop repo from Github
-  ```
+  ```bash
   git clone https://github.com/aws-samples/aws-iot-device-defender-workshop.git
   ```
 
@@ -55,7 +55,7 @@ In this step, we will run a small shell script that will setup the environment s
 
 From a console tab towards the bottom of your Cloud9 IDE, run "bootstrap.sh" script
 
-   ```
+   ```bash
    ./scripts/bootstrap.sh
    ```
 ## Create your AWS IoT Thing
@@ -69,7 +69,7 @@ From a console tab towards the bottom of your Cloud9 IDE, run "bootstrap.sh" scr
 
 ### Running the Thing Provisioning script
 
-  ```
+  ```bash
   ./scripts/provision_thing.py
   ```
 
@@ -152,7 +152,7 @@ publishes them to a reserved Device Defender MQTT Topic. From there, all
 processing is done automatically in the cloud by Device Defender.
 
 Run the agent from a console tab:
-  ```
+  ```bash
   cd scripts
   python /usr/local/lib/python2.7/site-packages/AWSIoTDeviceDefenderAgentSDK/agent.py @agent_args.txt
   ```
@@ -169,11 +169,10 @@ of a metrics report.
 
 1. Get your Target server URL from the CloudFormation outputs from the stack you created earlier
 1. In a second console tab (leave the agent running), run "ab" tool, which will generate HTTP traffic from your "device" to the target server
-
-```
-#Note: the trailing space is necessary here:
-ab -n 10000 http://YOUR_TARGET_INSTANCE_URL/
-```
+   ```bash
+      #Note: the trailing space is necessary here:
+      ab -n 10000 http://YOUR_TARGET_INSTANCE_URL/
+   ```
 
 ## View Violations
 
@@ -203,9 +202,13 @@ After approximately 10 minutes after you stop running AB, your device should no 
 _Note_ You can always check your violations history tab to see how the security posture of your devices changed over time. 
 
 # Cleanup
- 1. Delete your cloudformation stack
- 1. Delete all resources associated with DefenderWorkshop in your IoT Account
-    - IoT Thing, Thing Group, Policy, Certificate
+ 1. Delete your IoT Resources created with the provision_thing script
+    ```bash
+       cd scripts
+       ./provision_thing.py --cleanup
+    ```
+ 1. Delete your CloudFormation stack
+ 1. Delete all other AWS resources associated with DefenderWorkshop
     - SNS Topic
     - SNS Subscription
     - IAM Role

@@ -18,6 +18,11 @@ import json
 import os
 import argparse
 
+AMAZON_ROOT_CA__FILE = "../certificates/AmazonRootCA1.pem"
+PRIVATE_KEY_FILE = "../certificates/private_key.key"
+CERTIFICATE_PEM_FILE = "../certificates/certificate.pem"
+CERTIFICATE_ID_FILE = "../certificates/certificate_id.txt"
+
 THING_NAME = "DefenderWorkshopThing"
 POLICY_NAME = "DefenderWorkshopPolicy"
 GROUP_NAME = "DefenderWorkshopGroup"
@@ -25,27 +30,44 @@ GROUP_NAME = "DefenderWorkshopGroup"
 client = boto3.client('iot')
 
 
-def generate_agent_args_file(agent_args):
-    with open("../certificates/AmazonRootCA1.pem", "r") as ca_file:
-        agent_args += ["-r", os.path.realpath(ca_file.name)]
+def generate_agent_args_file(agent_args_map):
+    with open(AMAZON_ROOT_CA__FILE, "r") as ca_file:
+        agent_args_map += ["-r", os.path.realpath(ca_file.name)]
 
-    agent_args += ["-f", "json"]
+    agent_args_map += ["-f", "json"]
 
     with open("agent_args.txt", "w") as agent_args_file:
-        agent_args_file.writelines('\n'.join(agent_args) + '\n')
+        agent_args_file.writelines('\n'.join(agent_args_map) + '\n')
 
 
 def cleanup_things():
-    with open("../certificates/certificate_id.txt", "r") as id_file:
+    with open(CERTIFICATE_ID_FILE, "r") as id_file:
         cert_id = id_file.read()
+        descr_response = client.describe_certificate(certificateId=cert_id)
+        print(descr_response)
+        cert_arn = descr_response['certificateDescription']['certificateArn']
 
-    client.detach_policy(policyName=POLICY_NAME, target=cert_id)
-    client.update_certificate(certificateId=cert_id,
-                              newStatus="INACTIVE")
-    client.delete_certificate(certificateId=cert_id)
-    client.delete_thing(THING_NAME)
-    client.delete_thing_group(GROUP_NAME)
-    client.delete_policy(POLICY_NAME)
+    if cert_arn and cert_id:
+        client.detach_policy(policyName=POLICY_NAME, target=cert_arn)
+        client.update_certificate(certificateId=cert_id,
+                                  newStatus="INACTIVE")
+        client.detach_thing_principal(thingName=THING_NAME, principal=cert_arn)
+        client.delete_certificate(certificateId=cert_id)
+        client.remove_thing_from_thing_group(thingGroupName=GROUP_NAME, thingName=THING_NAME)
+        client.delete_thing(thingName=THING_NAME)
+        client.delete_thing_group(thingGroupName=GROUP_NAME)
+        client.delete_policy(policyName=POLICY_NAME)
+    else:
+        print("Unable to find certificate id")
+
+    if os.path.exists(CERTIFICATE_ID_FILE):
+        os.remove(CERTIFICATE_ID_FILE)
+
+    if os.path.exists(PRIVATE_KEY_FILE):
+        os.remove(PRIVATE_KEY_FILE)
+
+    if os.path.exists(CERTIFICATE_PEM_FILE):
+        os.remove(CERTIFICATE_PEM_FILE)
 
 
 if __name__ == '__main__':
@@ -76,17 +98,17 @@ if __name__ == '__main__':
             certificatePem = response['certificatePem']
             certificateArn = response['certificateArn']
             keyPair = response['keyPair']
-            print("Created Certificate  arn:" + certificateArn + "\n id:" + response['certificateId'])
+            print("Created Certificate  arn:" + certificateArn + "\n id:" + response['certificateArn'])
 
-            with open("../certificates/certificate.pem", "w") as certificateFile:
+            with open(CERTIFICATE_PEM_FILE, "w") as certificateFile:
                 certificateFile.write(certificatePem)
                 agent_args += ["-c", os.path.realpath(certificateFile.name)]
 
             # Save the certificate id to a file so we can easily cleanup later
-            with open("../certificates/certificate_id.txt", "w") as certificateIdFile:
+            with open(CERTIFICATE_ID_FILE, "w") as certificateIdFile:
                 certificateIdFile.write(response['certificateId'])
 
-            with open("../certificates/private_key.key", "w") as private_key:
+            with open(PRIVATE_KEY_FILE, "w") as private_key:
                 private_key.write(keyPair["PrivateKey"])
                 private_key
                 agent_args += ["-k", os.path.realpath(private_key.name)]
