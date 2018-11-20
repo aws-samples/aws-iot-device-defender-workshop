@@ -22,14 +22,14 @@ This CloudFormation Stack will create:
 
   1. From the AWS Console, navigate to [CloudFormation](https://console.aws.amazon.com/cloudformation/home)
   1. Click the "Create Stack" button,
-  1. Choose "Upload a template to S3", select the
+  1. Choose "Upload a template file", and select the
     **workshop.yaml** from the _cloudformation_ directory of the workshop GitHub repository you cloned earlier
   1. Click "Next"
   1. Give your stack a name: "DeviceDefenderWorkshop"
-  1. You can leave the hibernate and instance type fields as they are
-  1. In Subnet, choose the subnet you'd like to use
+  1. You can leave the AutoHibernateTimeout and InstanceType fields as they are
+  1. In SubnetIdentifier, choose the subnet you'd like to use
       - if you are unsure, choose the first one in the list
-  1. In KeyName, Select the Keypair you'd like to use for ssh access to your instances
+  1. In KeyName, Select the key pair you'd like to use for ssh access to your instances
   1. Click "Next" on the following screen
   1. Check the "I acknowledge that AWS CloudFormation might create IAM resources." box to continue
   1. Click the "Create Stack" button at the bottom of the screen
@@ -37,10 +37,10 @@ This CloudFormation Stack will create:
       - Tip: *you may need to refresh your screen to see the updated
         status of your stack*
 
-## Login into your C9 Environment
+## Login into your Cloud9 Environment
 
   1. Go to the [Cloud9 Console](https://console.aws.amazon.com/cloud9/home)
-  1. Enter the environment "Device Defender Workshop", by clicking the "Open IDE" button
+  1. Enter the environment "DeviceDefenderWorkshop", by clicking the "Open IDE" button
 
 ### Install prerequisites
 
@@ -70,13 +70,13 @@ From a console tab towards the bottom of your Cloud9 IDE, run "bootstrap.sh" scr
 ### Running the Thing Provisioning script
 
   ```
-  python scripts/provision_thing.py
-
+  ./scripts/provision_thing.py
   ```
 
-## Setup an SNS Topic for Device Defender Violation Notifications
+## Setup an SNS Topic for Device Defender Violation Notifications (SNS Console)
 
-Device Defender has the ability to send notification of a Behavior Profile violation via an SNS Topic. For this workshop, we will configure an SNS topic and enable email delivery of the notifications.
+Device Defender has the ability to send notification of a Behavior Profile violation via an SNS Topic. 
+For this workshop, we will configure an SNS topic and enable email delivery of the notifications.
 
 
 ### Setting up the SNS Topic
@@ -84,10 +84,11 @@ Device Defender has the ability to send notification of a Behavior Profile viola
 1. Navigate to the [SNS Console](https://console.aws.amazon.com/sns/v2/home)
 1. Click "Create Topic"
 1. For Topic Name: "DeviceDefenderNotifications"
-1. For Display Name: "Device Defender Notifications"
+1. For Display Name: "Defender"
 1. In the Topic Details screen for your newly created topic, click "Create Subscription"
 1. For Protocol, select "Email"
 1. For Endpoint enter your email address
+1. Check your email, after a few moments, you should receive a confirmation email
 1. Click "Confirm Subscription" link in the email
   - _Note_: the sender of the email will be the same as the Display Name you entered for the topic.
 
@@ -109,7 +110,7 @@ For this step, we will re-use a policy from AWS IoT Rules Engine, as it has the 
 1. On the Create Role screen enter "DeviceDefenderWorkshopNotification" for the Role Name
 1. Click "Create Role"
 
-## Configure a behavior profile
+## Configure a behavior profile (IoT Console)
 
 Now that we have our simulated thing created and we have a development
 environment, we are ready to configure a behavior profile in device
@@ -118,20 +119,24 @@ defender
 1. Navigate to the [Security Profiles Section](https://console.aws.amazon.com/iot/home#/dd/securityProfilesHub) of the Device Defender Console
 AWS IoT -> Defend -> Detect -> Security Profiles
 1. Click the "Create" button
+    - _Note_: If you have no Security Profiles in your account, you will see a "Create your first security profile" button instead
 1. Configure parameters
 1. Name: "NormalNetworkTraffic"
 1. Under Behaviors
   <br/>**Name:** "Packets Out"
   <br/>**Metric:** "Packets Out"
   <br/>**Operator:** "Less Than"
-  <br/>**Value:** "100"
+  <br/>**Value:** "10000"
   <br/>**Duration:** "5 minutes"
+1. On the Alert Targets Page
+   <br/>**SNS Topic:** "DefenderWorkshopNotifications"
+   <br/>**Role:** "DeviceDefenderWorkshopNotification"
+1. Click Next 
 1. Attach profile to group "DefenderWorkshopGroup"
-  - Setup alerting SNS
-  - Select SNS Topic "DefenderWorkshopNotifications"
-  - Select Role "DeviceDefenderWorkshopNotification" 
+1. Click Next
+1. Click Save
 
-## Start the Agent
+## Start the Agent (Cloud9)
 
 The next component of Device Defender we are going to look at is the
 Device Agent. The detect function of DD, can utilize both cloud-side
@@ -149,8 +154,17 @@ processing is done automatically in the cloud by Device Defender.
 Run the agent from a console tab:
   ```
   cd scripts
-  python usr/local/lib/python2.7/site-packages/AWSIoTDeviceDefenderAgentSDK/agent.py @agent_args.txt
+  python /usr/local/lib/python2.7/site-packages/AWSIoTDeviceDefenderAgentSDK/agent.py @agent_args.txt
   ```
+After a few minutes, you should see a message similar to the following:
+```
+Received a new message: 
+{"thingName":"DefenderWorkshopThing","reportId":1542697506,"status":"ACCEPTED","timestamp":1542697506269}
+
+```
+This is an MQTT message sent from Device Defender to the agent, acknowledging acceptance
+of a metrics report.
+  
 ## Start the attacker
 
 1. Get your Target server URL from the CloudFormation outputs from the stack you created earlier

@@ -79,7 +79,7 @@ if __name__ == '__main__':
         with open("../certificates/private_key.key", "w") as private_key:
             private_key.write(keyPair["PrivateKey"])
             private_key
-            agent_args += ["-k", private_key.name]
+            agent_args += ["-k", os.path.realpath(private_key.name)]
 
         response = client.attach_thing_principal(thingName=THING_NAME, principal=certificateArn)
         print("Attached Certificate to Thing: " + THING_NAME)
