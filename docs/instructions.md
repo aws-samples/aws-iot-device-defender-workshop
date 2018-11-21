@@ -192,7 +192,7 @@ You should see an email from SNS indicating the violation the contents will look
 
 --
 If you wish to stop receiving notifications from this topic, please click or visit the link below to unsubscribe:
-https://sns.us-east-1.amazonaws.com/unsubscribe.html?SubscriptionArn=arn:aws:sns:us-east-1:890450227363:DefenderNotifications:792ddc79-88e4-49c4-ac4a-2126efea0269&Endpoint=damiller@amazon.com
+https://sns.us-east-1.amazonaws.com/unsubscribe.html?SubscriptionArn=arn:aws:sns:#########:DefenderNotifications:######
 
 Please do not reply directly to this email. If you have any questions or comments regarding this email, please contact us at https://aws.amazon.com/support
 ```
