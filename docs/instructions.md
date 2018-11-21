@@ -214,3 +214,17 @@ _Note_ You can always check your violations history tab to see how the security 
     - SNS Subscription
     - IAM Role
     - Device Defender Behavior Profile
+
+
+# Troubleshooting
+## Problem: Getting an error in botocore when trying to use the aws cli
+```
+ImportError: cannot import name AliasedEventEmitter
+```
+### Solution
+```
+sudo yum downgrade aws-cli.noarch python27-botocore
+```
+## Problem: Cannot access URL for my target server
+### Solution
+Make sure you append a trailing slash on the url: http://my.ec2.ip.aeces/
