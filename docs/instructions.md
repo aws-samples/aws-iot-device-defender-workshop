@@ -124,7 +124,7 @@ AWS IoT -> Defend -> Detect -> Security Profiles
 1. Configure parameters
 1. Name: "NormalNetworkTraffic"
 1. Under Behaviors
-  <br/>**Name:** "Packets Out"
+  <br/>**Name:** "PacketsOut"
   <br/>**Metric:** "Packets Out"
   <br/>**Operator:** "Less Than"
   <br/>**Value:** "10000"
