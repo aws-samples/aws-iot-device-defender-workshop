@@ -10,6 +10,7 @@ Parameters:
   SubnetIdentifier:
     Description: SubnetId
     Type: AWS::EC2::Subnet::Id
+    AllowedPattern: ".+"
   InstanceType:
     Description: WebServer EC2 instance type
     Type: String
@@ -24,6 +25,7 @@ Parameters:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
+    AllowedPattern: ".+"
   SSHLocation:
     Description: The IP address range that can be used to SSH to the EC2 instances
     Type: String
