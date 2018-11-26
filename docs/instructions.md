@@ -2,8 +2,9 @@
 ## Prerequisites
 
   - AWS Account
-    - Have a [Default VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) configured 
+  - Have a [Default VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) configured 
   - [git](https://git-scm.com/downloads) installed on your development machine _(for cloning the workshop repository)_
+  - Create an [EC2 SSH Keypair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair)
   - Clone workshop repo from Github
     ```bash
     git clone https://github.com/aws-samples/aws-iot-device-defender-workshop.git

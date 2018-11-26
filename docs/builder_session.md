@@ -4,18 +4,72 @@
 1. Create a lambda to automate response to a security profile violation
 1. Trigger a Profile violation
 
-# Instructions
-_Steps 1-4 are shared with the workshop_
-1. Create Cloudformation Stack
-This stack will create the following resources in your AWS Account:
-   - Cloud9 IDE Instance
-   - EC2 Webserver instance
-   - SNS Topic for Device Defender Notifications
-   - IAM Role to Allow Device Defender to publish events to SNS
-   - IAM Role for Lambda Execution
-1. Enter Cloud9 IDE Instance
-1. Run bootstrap script
-1. Run provision thing script
+## Prerequisites
+
+  - AWS Account
+  - Have a [Default VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) configured 
+  - [git](https://git-scm.com/downloads) installed on your development machine _(for cloning the workshop repository)_
+  - Create an [EC2 SSH Keypair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair)
+  - Clone workshop repo from Github
+    ```bash
+    git clone https://github.com/aws-samples/aws-iot-device-defender-workshop.git
+    ```
+
+### Steps
+
+  1. From the [AWS Management Console](https://console.aws.amazon.com/console), navigate to [CloudFormation](https://console.aws.amazon.com/cloudformation/home)
+  1. Click the "Create Stack" button,
+  1. Choose "Upload a template file", and select the
+    **workshop.yaml** from the _cloudformation_ directory of the workshop GitHub repository you cloned earlier
+  1. Click "Next"
+  1. Give your stack a name: "DeviceDefenderBuilderSession"
+  1. You can leave the AutoHibernateTimeout and InstanceType fields as they are
+  1. In SubnetIdentifier, choose the subnet you'd like to use
+      - if you are unsure, choose the first one in the list
+  1. In KeyName, Select the key pair you'd like to use for ssh access to your instances
+  1. Click "Next" on the following screen
+  1. Check the "I acknowledge that AWS CloudFormation might create IAM resources." box to continue
+  1. Click the "Create Stack" button at the bottom of the screen
+  1. Wait for stack to finish, you should see "CREATE COMPLETE" in the status column after a few minutes
+      - Tip: *you may need to refresh your screen to see the updated
+        status of your stack*
+
+## Login into your Cloud9 Environment
+
+  1. Go to the [Cloud9 Console](https://console.aws.amazon.com/cloud9/home)
+  1. Enter the environment "DeviceDeviceDefenderBuilderSession", by clicking the "Open IDE" button
+
+### Install prerequisites
+
+In this step, we will run a small shell script that will setup the environment so we can quickly get started learning about Device Defender
+
+- Download Amazon CA certificates
+- Install Boto3 python library for AWS
+- Install AWS IoT Device SDK python package
+- Install AWS IoT Device Defender Agent SDK Python Package
+
+#### Steps
+
+From a console tab towards the bottom of your Cloud9 IDE, run "bootstrap.sh" script
+   ```bash
+   cd scripts
+   ./bootstrap.sh
+   ```
+## Create your AWS IoT Thing
+
+  In this step, we will run a Python script that will automate creating an AWS IoT Thing, this will be the "Thing" that we simulate in our Cloud9 instance.  This script will create the following:
+
+  - An IoT Thing Group
+  - An IoT Thing, registered in IoT Device management, placed in the group we created
+  - An IoT Certificate, attached to your Thing
+  - An IoT Policy attached to the Certificate
+  - An agent_args.txt file to make running the Device Defender Agent easier
+
+### Running the Thing Provisioning script
+While in the _scripts_ directory, run the following
+  ```bash
+  ./provision_thing.py
+  ```
 
 ## Create a quarantine thing group
 1. Navigate to the [IoT Console](https://console.aws.amazon.com/iot/home)
