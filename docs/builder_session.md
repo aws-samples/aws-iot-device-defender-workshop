@@ -27,7 +27,8 @@
   1. In SubnetIdentifier, choose the subnet you'd like to use
       - if you are unsure, choose the first one in the list
   1. In KeyName, Select the key pair you'd like to use for ssh access to your instances
-  1. Click "Next" on the following screen
+  1. Click "Next"
+  1. Click "Next" on the following screen, called "Options"
   1. Check the "I acknowledge that AWS CloudFormation might create IAM resources." box to continue
   1. Click the "Create Stack" button at the bottom of the screen
   1. Wait for stack to finish, you should see "CREATE COMPLETE" in the status column after a few minutes
