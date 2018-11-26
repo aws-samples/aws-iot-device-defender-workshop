@@ -153,7 +153,7 @@ Received a new message:
        ./provision_thing.py --cleanup
     ```
  1. Delete your CloudFormation stack
- 1. Delete all other AWS resources associated with DefenderWorkshop
+ 1. Delete all other AWS resources associated with DefenderBuilderSession
     - Quarantine Thing Group
     - Device Defender Behavior Profile
 
