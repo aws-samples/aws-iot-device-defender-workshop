@@ -20,7 +20,7 @@
   1. From the [AWS Management Console](https://console.aws.amazon.com/console), navigate to [CloudFormation](https://console.aws.amazon.com/cloudformation/home)
   1. Click the "Create Stack" button,
   1. Choose "Upload a template file", and select the
-    **workshop.yaml** from the _cloudformation_ directory of the workshop GitHub repository you cloned earlier
+    **builder.yaml** from the _cloudformation_ directory of the workshop GitHub repository you cloned earlier
   1. Click "Next"
   1. Give your stack a name: "DeviceDefenderBuilderSession"
   1. You can leave the AutoHibernateTimeout and InstanceType fields as they are
@@ -153,7 +153,7 @@ Received a new message:
        ./provision_thing.py --cleanup
     ```
  1. Delete your CloudFormation stack
- 1. Delete all other AWS resources associated with DefenderWorkshop
+ 1. Delete all other AWS resources associated with DefenderBuilderSession
     - Quarantine Thing Group
     - Device Defender Behavior Profile
 
