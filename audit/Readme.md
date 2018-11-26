@@ -30,15 +30,15 @@
 ## Create IoT resources to audit
 - Download the git repository:
   ```bash
-    git clone https://github.com/aws-samples/aws-iot-device-defender-audit.git
+    git clone https://github.com/aws-samples/aws-iot-device-defender-workshop.git
   ```
 - Execute the setup script:
   ```bash
-    python scripts/iot-device-defender-audit-resources-setup.py --region <region>
+    python aws-iot-device-defender-workshop/audit/scripts/iot-device-defender-audit-resources-setup.py --region <region>
   ```
 - You can execute the above script multiple times to create more test resources in your account by setting the --skip-cleanup flag:
   ```bash
-    python scripts/iot-resources-setup.py --region <region> --skip-cleanup
+    python aws-iot-device-defender-workshop/audit/scripts/iot-resources-setup.py --region <region> --skip-cleanup
   ```
 
 ## Create IAM Role for DeviceDefender-Audit to use
