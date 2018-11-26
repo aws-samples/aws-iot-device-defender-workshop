@@ -19,7 +19,7 @@ This CloudFormation Stack will create:
 
   - A Cloud9 IDE and associated EC2 instance (this will stand in for an IoT Thing)
   - An EC2 instance to serve as a target for our simulated attack
-
+'
 ### Steps
 
   1. From the AWS Console, navigate to [CloudFormation](https://console.aws.amazon.com/cloudformation/home)
@@ -57,7 +57,7 @@ In this step, we will run a small shell script that will setup the environment s
 
 From a console tab towards the bottom of your Cloud9 IDE, run "bootstrap.sh" script
    ```bash
-   cd scripts
+   cd workshop/scripts
    ./bootstrap.sh
    ```
 ## Create your AWS IoT Thing
@@ -112,7 +112,7 @@ For this step, we will re-use a policy from AWS IoT Rules Engine, as it has the 
 1. On the Create Role screen enter "DeviceDefenderWorkshopNotification" for the Role Name
 1. Click "Create Role"
 
-## Configure a behavior profile (IoT Console)
+## Configure a behavior profile (IoT Device Defender Console)
 
 Now that we have our simulated thing created and we have a development
 environment, we are ready to configure a behavior profile in device
@@ -173,7 +173,7 @@ of a metrics report.
 1. In a second console tab (leave the agent running), run "ab" tool, which will generate HTTP traffic from your "device" to the target server
    ```bash
       #Note: the trailing space is necessary here:
-      ab -n 10000 http://YOUR_TARGET_INSTANCE_URL/
+      ab -n 20000 http://YOUR_TARGET_INSTANCE_URL/
    ```
 
 ## View Violations

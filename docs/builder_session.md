@@ -52,7 +52,7 @@ In this step, we will run a small shell script that will setup the environment s
 
 From a console tab towards the bottom of your Cloud9 IDE, run "bootstrap.sh" script
    ```bash
-   cd scripts
+   cd workshop/scripts
    ./bootstrap.sh
    ```
 ## Create your AWS IoT Thing
@@ -70,6 +70,33 @@ While in the _scripts_ directory, run the following
   ```bash
   ./provision_thing.py
   ```
+
+## Configure a behavior profile (IoT Device Defender Console)
+
+Now that we have our simulated thing created and we have a development
+environment, we are ready to configure a behavior profile in device
+defender
+
+1. Navigate to the [Security Profiles Section](https://console.aws.amazon.com/iot/home#/dd/securityProfilesHub) of the Device Defender Console
+AWS IoT -> Defend -> Detect -> Security Profiles
+1. Click the "Create" button
+    - _Note_: If you have no Security Profiles in your account, you will see a "Create your first security profile" button instead
+1. Configure parameters
+1. Name: "NormalNetworkTraffic"
+1. Under Behaviors
+  <br/>**Name:** "PacketsOut"
+  <br/>**Metric:** "Packets Out"
+  <br/>**Operator:** "Less Than"
+  <br/>**Value:** "10000"
+  <br/>**Duration:** "5 minutes"
+1. On the Alert Targets Page
+   <br/>**SNS Topic:** "DeviceDefenderNotifications"
+   <br/>**Role:** "DeviceDefenderWorkshopNotification"
+1. Click Next 
+1. Attach profile to group "DefenderWorkshopGroup"
+1. Click Next
+1. Click Save
+
 
 ## Create a quarantine thing group
 1. Navigate to the [IoT Console](https://console.aws.amazon.com/iot/home)
@@ -102,18 +129,18 @@ so we can easily find it for further investigation and remediation.
    ```python
    from __future__ import print_function
 
-    import json
-    import boto3
+   import json
+   import boto3
 
-    def lambda_handler(event, context):
-        message = event['Records'][0]['Sns']['Message']
-        violation = json.loads(message)
-        thing_name = violation["thingName"]
-        print("ThingName:" + thing_name)
-        client = boto3.client('iot')
-        response = client.add_thing_to_thing_group(thingGroupName="Quarantine", thingName=thing_name)
-        print(response)
-        return message
+   def lambda_handler(event, context):
+       message = event['Records'][0]['Sns']['Message']
+       violation = json.loads(message)
+       thing_name = violation["thingName"]
+       print("ThingName:" + thing_name)
+       client = boto3.client('iot')
+       response = client.add_thing_to_thing_group(thingGroupName="Quarantine", thingName=thing_name)
+       print(response)
+       return message
     ```
 1. Click the save button
 
@@ -135,7 +162,7 @@ Received a new message:
 1. In a second console tab (leave the agent running), run "ab" tool, which will generate HTTP traffic from your "device" to the target server
    ```bash
       #Note: the trailing space is necessary here:
-      ab -n 10000 http://YOUR_TARGET_INSTANCE_URL/
+      ab -n 20000 http://YOUR_TARGET_INSTANCE_URL/
    ```   
 1. Wait approximately 5 minutes for another metrics report to be published
 
