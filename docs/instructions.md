@@ -229,3 +229,20 @@ sudo yum downgrade aws-cli.noarch python27-botocore
 ## Problem: Cannot access URL for my target server
 ### Solution
 Make sure you append a trailing slash on the url: http://my.ec2.ip.aeces/
+
+# Extended Activities
+If you have finished the main workshop materials, here are a few ideas for exploring device defender further.
+
+#### Automated Response to Violations
+
+Using SNS to Trigger a Lambda Function you can:
+- Deactivate a devices's certificate
+- Apply a more restrictive policy to the device's certificate
+- Move the device to a special "Quarantine" thing group for further investigation
+
+##### Try creating new behavior profiles acting on different metrics, and the devise ways to trigger violations.
+
+Here are few ideas
+- _Bytes In_: use "curl" or "wget" to download a large file placed on the target instance
+- _TCP Connection Count_: make a large number connection to the target instance using the "ab" tool
+- _Messages Sent_: Send a large number of MQTT messages to a topic
