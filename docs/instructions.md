@@ -172,7 +172,7 @@ of a metrics report.
 1. Get your Target server URL from the CloudFormation outputs from the stack you created earlier
 1. In a second console tab (leave the agent running), run "ab" tool, which will generate HTTP traffic from your "device" to the target server
    ```bash
-      #Note: the trailing space is necessary here:
+      #Note: the trailing slash is necessary here:
       ab -n 20000 http://YOUR_TARGET_INSTANCE_URL/
    ```
 
