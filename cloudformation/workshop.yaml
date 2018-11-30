@@ -312,4 +312,4 @@ Outputs:
   Cloud9EnvironmentName:
     Value: !GetAtt IDE.Name
   Cloud9EnvironmentLink:
-    Value: !Sub 'https://console.aws.amazon.com/cloud9/ide/{IDE}'
+    Value: !Sub 'https://console.aws.amazon.com/cloud9/ide/${IDE}'

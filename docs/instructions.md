@@ -44,8 +44,8 @@ This CloudFormation Stack will create:
 
 ## Login into your Cloud9 Environment
 
-  1. Go to the [Cloud9 Console](https://console.aws.amazon.com/cloud9/home)
-  1. Enter the environment "DeviceDefenderWorkshop", by clicking the "Open IDE" button
+  1. Go to the Outputs tab of the CloudFormation stack you just created
+  1. Navigate to URL next to the key"Cloud9EnvironmentLink"
 
 ### Install prerequisites
 

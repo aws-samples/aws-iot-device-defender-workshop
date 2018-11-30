@@ -7,7 +7,8 @@
 ## Prerequisites
 
   - AWS Account
-  - Have a [Default VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) configured 
+  - Have a [Default VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) configured
+    If you don't have a default VPC, follow this [guide](https://docs.aws.amazon.com/cloud9/latest/user-guide/vpc-settings.html#vpc-settings-create-vpc) to create a VPC that is compatible with Cloud9
   - [git](https://git-scm.com/downloads) installed on your development machine _(for cloning the workshop repository)_
   - Create an [EC2 SSH Keypair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair)
   - Clone workshop repo from Github
@@ -37,8 +38,8 @@
 
 ## Login into your Cloud9 Environment
 
-  1. Go to the [Cloud9 Console](https://console.aws.amazon.com/cloud9/home)
-  1. Enter the environment "DeviceDeviceDefenderBuilderSession", by clicking the "Open IDE" button
+  1. Go to the Outputs tab of the CloudFormation stack you just created
+  1. Navigate to URL next to the key"Cloud9EnvironmentLink"
 
 ### Install prerequisites
 
