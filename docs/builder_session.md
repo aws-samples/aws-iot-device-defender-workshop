@@ -184,6 +184,7 @@ Received a new message:
  1. Delete all other AWS resources associated with DefenderBuilderSession
     - Quarantine Thing Group
     - Device Defender Behavior Profile
+    - Any associated S3 buckets
 
 
 # Troubleshooting
