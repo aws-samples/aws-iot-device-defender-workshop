@@ -2,7 +2,8 @@
 ## Prerequisites
 
   - AWS Account
-  - Have a [Default VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) configured 
+  - Have a [Default VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) configured
+    If you don't have a default VPC, follow this [guide](https://docs.aws.amazon.com/cloud9/latest/user-guide/vpc-settings.html#vpc-settings-create-vpc) to create a VPC that is compatible with Cloud9
   - [git](https://git-scm.com/downloads) installed on your development machine _(for cloning the workshop repository)_
   - Create an [EC2 SSH Keypair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair)
   - Clone workshop repo from Github
@@ -22,6 +23,7 @@ This CloudFormation Stack will create:
 '
 ### Steps
 
+  1. Choose an [AWS region with Cloud9 Support](https://docs.aws.amazon.com/general/latest/gr/rande.html#cloud9_region)
   1. From the AWS Console, navigate to [CloudFormation](https://console.aws.amazon.com/cloudformation/home)
   1. Click the "Create Stack" button,
   1. Choose "Upload a template file", and select the
@@ -31,6 +33,7 @@ This CloudFormation Stack will create:
   1. You can leave the AutoHibernateTimeout and InstanceType fields as they are
   1. In SubnetIdentifier, choose the subnet you'd like to use
       - if you are unsure, choose the first one in the list
+      - If you created a VPC for Cloud9 in the Prerequisites section, choose the subnet you created there.
   1. In KeyName, Select the key pair you'd like to use for ssh access to your instances
   1. Click "Next" on the following screen
   1. Check the "I acknowledge that AWS CloudFormation might create IAM resources." box to continue

@@ -38,40 +38,14 @@ Mappings:
   Region2Examples:
     us-east-1:
       Examples: https://s3.amazonaws.com/cloudformation-examples-us-east-1
-    us-west-2:
-      Examples: https://s3-us-west-2.amazonaws.com/cloudformation-examples-us-west-2
-    us-west-1:
-      Examples: https://s3-us-west-1.amazonaws.com/cloudformation-examples-us-west-1
-    eu-west-1:
-      Examples: https://s3-eu-west-1.amazonaws.com/cloudformation-examples-eu-west-1
-    eu-west-2:
-      Examples: https://s3-eu-west-2.amazonaws.com/cloudformation-examples-eu-west-2
-    eu-west-3:
-      Examples: https://s3-eu-west-3.amazonaws.com/cloudformation-examples-eu-west-3
-    eu-central-1:
-      Examples: https://s3-eu-central-1.amazonaws.com/cloudformation-examples-eu-central-1
-    ap-southeast-1:
-      Examples: https://s3-ap-southeast-1.amazonaws.com/cloudformation-examples-ap-southeast-1
-    ap-northeast-1:
-      Examples: https://s3-ap-northeast-1.amazonaws.com/cloudformation-examples-ap-northeast-1
-    ap-northeast-2:
-      Examples: https://s3-ap-northeast-2.amazonaws.com/cloudformation-examples-ap-northeast-2
-    ap-northeast-3:
-      Examples: https://s3-ap-northeast-3.amazonaws.com/cloudformation-examples-ap-northeast-3
-    ap-southeast-2:
-      Examples: https://s3-ap-southeast-2.amazonaws.com/cloudformation-examples-ap-southeast-2
-    ap-south-1:
-      Examples: https://s3-ap-south-1.amazonaws.com/cloudformation-examples-ap-south-1
     us-east-2:
       Examples: https://s3-us-east-2.amazonaws.com/cloudformation-examples-us-east-2
-    ca-central-1:
-      Examples: https://s3-ca-central-1.amazonaws.com/cloudformation-examples-ca-central-1
-    sa-east-1:
-      Examples: https://s3-sa-east-1.amazonaws.com/cloudformation-examples-sa-east-1
-    cn-north-1:
-      Examples: https://s3.cn-north-1.amazonaws.com.cn/cloudformation-examples-cn-north-1
-    cn-northwest-1:
-      Examples: https://s3.cn-northwest-1.amazonaws.com.cn/cloudformation-examples-cn-northwest-1
+    us-west-2:
+      Examples: https://s3-us-west-2.amazonaws.com/cloudformation-examples-us-west-2
+    ap-southeast-1:
+      Examples: https://s3-ap-southeast-1.amazonaws.com/cloudformation-examples-ap-southeast-1
+    eu-west-1:
+      Examples: https://s3-eu-west-1.amazonaws.com/cloudformation-examples-eu-west-1
   AWSInstanceType2Arch:
     t1.micro:
       Arch: HVM64
@@ -94,130 +68,44 @@ Mappings:
     us-east-1:
       HVM64: ami-0ff8a91507f77f867
       HVMG2: ami-0a584ac55a7631c0c
-    us-west-2:
-      HVM64: ami-a0cfeed8
-      HVMG2: ami-0e09505bc235aa82d
-    us-west-1:
-      HVM64: ami-0bdb828fd58c52235
-      HVMG2: ami-066ee5fd4a9ef77f1
-    eu-west-1:
-      HVM64: ami-047bb4163c506cd98
-      HVMG2: ami-0a7c483d527806435
-    eu-west-2:
-      HVM64: ami-f976839e
-      HVMG2: NOT_SUPPORTED
-    eu-west-3:
-      HVM64: ami-0ebc281c20e89ba4b
-      HVMG2: NOT_SUPPORTED
-    eu-central-1:
-      HVM64: ami-0233214e13e500f77
-      HVMG2: ami-06223d46a6d0661c7
-    ap-northeast-1:
-      HVM64: ami-06cd52961ce9f0d85
-      HVMG2: ami-053cdd503598e4a9d
-    ap-northeast-2:
-      HVM64: ami-0a10b2721688ce9d2
-      HVMG2: NOT_SUPPORTED
-    ap-southeast-1:
-      HVM64: ami-08569b978cc4dfa10
-      HVMG2: ami-0be9df32ae9f92309
-    ap-southeast-2:
-      HVM64: ami-09b42976632b27e9b
-      HVMG2: ami-0a9ce9fecc3d1daf8
     us-east-2:
       HVM64: ami-0b59bfac6be064b78
       HVMG2: NOT_SUPPORTED
+    us-west-2:
+      HVM64: ami-a0cfeed8
+      HVMG2: ami-0e09505bc235aa82d
+    ap-southeast-1:
+      HVM64: ami-08569b978cc4dfa10
+      HVMG2: ami-0be9df32ae9f92309
+    eu-west-1:
+      HVM64: ami-047bb4163c506cd98
+      HVMG2: ami-0a7c483d527806435
   Region2Principal:
     us-east-1:
       EC2Principal: ec2.amazonaws.com
       OpsWorksPrincipal: opsworks.amazonaws.com
+    us-east-2:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
     us-west-2:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    us-west-1:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    eu-west-1:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    eu-west-2:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    eu-west-3:
       EC2Principal: ec2.amazonaws.com
       OpsWorksPrincipal: opsworks.amazonaws.com
     ap-southeast-1:
       EC2Principal: ec2.amazonaws.com
       OpsWorksPrincipal: opsworks.amazonaws.com
-    ap-northeast-1:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    ap-northeast-2:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    ap-northeast-3:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    ap-southeast-2:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    ap-south-1:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    us-east-2:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    ca-central-1:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    sa-east-1:
-      EC2Principal: ec2.amazonaws.com
-      OpsWorksPrincipal: opsworks.amazonaws.com
-    cn-north-1:
-      EC2Principal: ec2.amazonaws.com.cn
-      OpsWorksPrincipal: opsworks.amazonaws.com.cn
-    cn-northwest-1:
-      EC2Principal: ec2.amazonaws.com.cn
-      OpsWorksPrincipal: opsworks.amazonaws.com.cn
-    eu-central-1:
+    eu-west-1:
       EC2Principal: ec2.amazonaws.com
       OpsWorksPrincipal: opsworks.amazonaws.com
   Region2ARNPrefix:
     us-east-1:
       ARNPrefix: 'arn:aws:'
-    us-west-1:
+    us-east-2:
       ARNPrefix: 'arn:aws:'
     us-west-2:
       ARNPrefix: 'arn:aws:'
-    eu-west-1:
-      ARNPrefix: 'arn:aws:'
-    eu-west-2:
-      ARNPrefix: 'arn:aws:'
-    eu-west-3:
-      ARNPrefix: 'arn:aws:'
-    ap-northeast-1:
-      ARNPrefix: 'arn:aws:'
-    ap-northeast-2:
-      ARNPrefix: 'arn:aws:'
-    ap-northeast-3:
-      ARNPrefix: 'arn:aws:'
     ap-southeast-1:
       ARNPrefix: 'arn:aws:'
-    ap-southeast-2:
-      ARNPrefix: 'arn:aws:'
-    ap-south-1:
-      ARNPrefix: 'arn:aws:'
-    us-east-2:
-      ARNPrefix: 'arn:aws:'
-    ca-central-1:
-      ARNPrefix: 'arn:aws:'
-    sa-east-1:
-      ARNPrefix: 'arn:aws:'
-    cn-north-1:
-      ARNPrefix: 'arn:aws-cn:'
-    cn-northwest-1:
-      ARNPrefix: 'arn:aws-cn:'
-    eu-central-1:
+    eu-west-1:
       ARNPrefix: 'arn:aws:'
 Resources:
   LogRole:
@@ -420,6 +308,8 @@ Resources:
 Outputs:
   URL:
     Description: URL of the target website
-    Value: !Sub 'http://${WebServerInstance.PublicDnsName}'
+    Value: !Sub 'http://${WebServerInstance.PublicDnsName}/'
   Cloud9EnvironmentName:
     Value: !GetAtt IDE.Name
+  Cloud9EnvironmentLink:
+    Value: !Sub 'https://console.aws.amazon.com/cloud9/ide/{IDE}'
