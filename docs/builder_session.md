@@ -150,7 +150,7 @@ so we can easily find it for further investigation and remediation.
 1. From the console, run your Device Defender Agent
  ```bash
   cd scripts
-  python /usr/local/lib/python2.7/site-packages/AWSIoTDeviceDefenderAgentSDK/agent.py @agent_args.txt
+  python2 /usr/local/lib/python2.7/site-packages/AWSIoTDeviceDefenderAgentSDK/agent.py @agent_args.txt
   ```
 1. Wait for about 5 minutes, until your agent has published two metrics reports
 You should see two lines similar to this:
