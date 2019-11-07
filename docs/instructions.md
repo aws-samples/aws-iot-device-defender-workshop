@@ -156,7 +156,7 @@ processing is done automatically in the cloud by Device Defender.
 Run the agent from a console tab:
   ```bash
   cd scripts
-  python /usr/local/lib/python2.7/site-packages/AWSIoTDeviceDefenderAgentSDK/agent.py @agent_args.txt
+  python2 /usr/local/lib/python2.7/site-packages/AWSIoTDeviceDefenderAgentSDK/agent.py @agent_args.txt
   ```
 After a few minutes, you should see a message similar to the following:
 ```
