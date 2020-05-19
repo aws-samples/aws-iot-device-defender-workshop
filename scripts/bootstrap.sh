@@ -26,4 +26,3 @@ wget -P ../certificates https://www.amazontrust.com/repository/AmazonRootCA1.pem
 wget -P ../certificates https://www.amazontrust.com/repository/AmazonRootCA2.pem
 wget -P ../certificates https://www.amazontrust.com/repository/AmazonRootCA3.pem
 wget -P ../certificates https://www.amazontrust.com/repository/AmazonRootCA4.pem
-wget -P ../certificates https://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem

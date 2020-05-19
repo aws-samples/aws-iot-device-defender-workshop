@@ -100,7 +100,7 @@ if __name__ == '__main__':
                 thingId = response['thingId']
                 print("Created Thing: " + thingId)
             else:
-                print "Thing Already Exists, please choose another name, or delete existing thing"
+                print("Thing Already Exists, please choose another name, or delete existing thing")
                 exit(1)
 
             agent_args += ["-id", THING_NAME]
@@ -164,4 +164,4 @@ if __name__ == '__main__':
 
             generate_agent_args_file(agent_args)
         except ClientError as e:
-            print e;
+            print(e)

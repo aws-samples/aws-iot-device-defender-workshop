@@ -72,7 +72,7 @@ From a console tab towards the bottom of your Cloud9 IDE, run "bootstrap.sh" scr
 ### Running the Thing Provisioning script
 While in the _scripts_ directory, run the following
   ```bash
-  ./provision_thing.py
+  python ./provision_thing.py
   ```
 
 ## Setup an SNS Topic for Device Defender Violation Notifications (SNS Console)
@@ -141,7 +141,7 @@ AWS IoT -> Defend -> Detect -> Security Profiles
 ## Start the Agent (Cloud9)
 
 The next component of Device Defender we are going to look at is the
-Device Agent. The detect function of DD, can utilize both cloud-side
+Device Agent. The detect function of Device Defender, can utilize both cloud-side
 metrics and device-side metrics. For device-side metrics, we need
 something that runs on the device and collects metrics and sends them to
 Device Defender. For this we provide reference implementations of agents that you
@@ -156,7 +156,7 @@ processing is done automatically in the cloud by Device Defender.
 Run the agent from a console tab:
   ```bash
   cd scripts
-  python2 /usr/local/lib/python2.7/site-packages/AWSIoTDeviceDefenderAgentSDK/agent.py @agent_args.txt
+  python /usr/local/lib/python3.6/site-packages/AWSIoTDeviceDefenderAgentSDK/agent.py @agent_args.txt
   ```
 After a few minutes, you should see a message similar to the following:
 ```
@@ -207,7 +207,7 @@ _Note_ You can always check your violations history tab to see how the security 
  1. Delete your IoT Resources created with the provision_thing script
     ```bash
        cd scripts
-       ./provision_thing.py --cleanup
+       python ./provision_thing.py --cleanup
     ```
  1. Delete your CloudFormation stack
  1. Delete all other AWS resources associated with DefenderWorkshop
